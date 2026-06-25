@@ -19,8 +19,8 @@ async def send_message(to: str, channel: str, text: str) -> dict:
         from_id = "22353"
     elif channel == "messenger":
         from_id = "100614398987044"
-    elif channel == "instagram":
-        from_id = "17841449184623529"
+    # elif channel == "instagram":
+    #     from_id = "17841449184623529"
     else:
         # Default to the WhatsApp sandbox number from env
         from_id = settings.VONAGE_FROM_NUMBER
