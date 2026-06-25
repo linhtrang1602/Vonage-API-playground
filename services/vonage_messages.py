@@ -14,11 +14,22 @@ async def send_message(to: str, channel: str, text: str) -> dict:
     url = f"{settings.VONAGE_MESSAGES_BASE_URL}/v1/messages"
     clean_to = to.replace("+", "").replace(" ", "")
 
+    # Determine the 'from' sender based on the channel
+    if channel == "viber_service":
+        from_id = "22353"
+    elif channel == "messenger":
+        from_id = "100614398987044"
+    elif channel == "instagram":
+        from_id = "17841449184623529"
+    else:
+        # Default to the WhatsApp sandbox number from env
+        from_id = settings.VONAGE_FROM_NUMBER
+
     payload = {
         "message_type": "text",
         "text": text,
         "to": clean_to,
-        "from": settings.VONAGE_FROM_NUMBER,
+        "from": from_id,
         "channel": channel,
     }
 
