@@ -20,11 +20,23 @@ async def webhook_inbound(request: Request):
 
     logger.info(f"[Webhook/inbound] Payload: {payload}")
 
+    # Safely extract sender
+    sender = payload.get("from", "")
+    if isinstance(sender, dict):
+        sender = sender.get("number", sender.get("id", str(sender)))
+
+    # Safely extract text
+    text = payload.get("text", "")
+    if not text:
+        msg_obj = payload.get("message", {})
+        if isinstance(msg_obj, dict):
+            text = msg_obj.get("content", {}).get("text", "")
+
     # Broadcast with type field so frontend can distinguish event types
     await manager.broadcast({
         "type": "inbound",
-        "from": payload.get("from", {}).get("number", ""),
-        "text": payload.get("message", {}).get("content", {}).get("text", ""),
+        "from": sender,
+        "text": text,
         "timestamp": payload.get("timestamp", ""),
         "raw": payload,
     })
