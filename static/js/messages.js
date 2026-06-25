@@ -122,3 +122,16 @@ function escapeHtml(str) {
   div.textContent = str;
   return div.innerHTML;
 }
+
+document.getElementById('msg-channel').addEventListener('change', function () {
+  const label = document.getElementById('msg-recipient-label');
+  const input = document.getElementById('msg-recipient');
+
+  if (this.value === 'messenger') {
+    label.textContent = 'Recipient ID';
+    input.placeholder = '';
+  } else {
+    label.textContent = 'Phone number';
+    input.placeholder = '+8498xxxxxxx';
+  }
+});
